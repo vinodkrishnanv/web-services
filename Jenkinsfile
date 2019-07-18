@@ -7,7 +7,7 @@ node {
 
     stage('Initialize'){
         def mvnHome = tool 'M3'
-        env.PATH = "${mavenHome}/bin:${env.PATH}"
+        env.PATH = "${mvnHome}/bin:${env.PATH}"
     }
 
     stage('Checkout') {
