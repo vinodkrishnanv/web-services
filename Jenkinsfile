@@ -18,7 +18,7 @@ node {
 		sh "mvn verify"
 	}
 	stage("Package") {
-		  sh "mvn build"
+		  sh "mvn package"
 	}
 	stage("Docker build") {
 		  sh "docker build -t v1dock/web-services ."
