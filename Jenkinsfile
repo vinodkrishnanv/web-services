@@ -1,6 +1,6 @@
 node {
 	stage("Docker test") {
-		sh "docker version"
+		sh "sudo docker version"
 	}
     stage('Initialize'){
         def mvnHome = tool 'M3'
