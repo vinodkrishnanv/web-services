@@ -14,13 +14,11 @@ node {
 	stage("Unit test") {
 				sh "mvn test"
 	}
-    	stage("Integration test") {
-			   steps {
-					sh "mvn verify"
-			   }
-		}
+	stage("Integration test") {
+		sh "mvn verify"
+	}
 	stage("Package") {
-			  sh "mvn build"
+		  sh "mvn build"
 	}
 	stage("Docker build") {
 		  sh "docker build -t v1dock/web-services ."
