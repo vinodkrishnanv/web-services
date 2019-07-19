@@ -1,72 +1,59 @@
-def CONTAINER_NAME="jenkins-pipeline"
-def CONTAINER_TAG="latest"
-def DOCKER_HUB_USER="v1dock"
-def HTTP_PORT="8090"
-
-node {
-
-    stage('Initialize'){
-        def mvnHome = tool 'M3'
-        env.PATH = "${mvnHome}/bin:${env.PATH}"
+pipeline {
+     agent any
+     stages {
+		 stage('Initialize'){
+			 steps {
+						def mvnHome = tool 'M3'
+						env.PATH = "${mvnHome}/bin:${env.PATH}"
+				   }
+		}
+		stage('Checkout') {
+			 steps {
+				git 'https://github.com/vinodkrishnanv/web-services.git'
+			}
+		}
+		stage("Compile") {
+		   steps {
+				sh "mvn clean compile"
+		   }
+		}
+	  stage("Unit test") {
+		   steps {
+				sh "mvn test"
+		   }
+	  }
+	stage("Unit test") {
+		   steps {
+				sh "mvn verify"
+		   }
     }
-
-    stage('Checkout') {
-        checkout scm
-    }
-
-    stage('Build'){
-        sh "mvn clean install"
-    }
-
-    stage('Sonar'){
-        try {
-            sh "mvn sonar:sonar"
-        } catch(error){
-            echo "The sonar server could not be reached ${error}"
-        }
+	  
+    
+stage("Package") {
+     steps {
+          sh "mvn build"
      }
-
-    stage("Image Prune"){
-        imagePrune(CONTAINER_NAME)
-    }
-
-    stage('Image Build'){
-        imageBuild(CONTAINER_NAME, CONTAINER_TAG)
-    }
-
-    stage('Push to Docker Registry'){
-        withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-            pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
-        }
-    }
-
-    stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
-    }
-
 }
-
-def imagePrune(containerName){
-    try {
-        sh "docker image prune -f"
-        sh "docker stop $containerName"
-    } catch(error){}
+stage("Docker build") {
+     steps {
+          sh "docker build -t v1dock/web-services ."
+     }
 }
-
-def imageBuild(containerName, tag){
-    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
-    echo "Image build complete"
+stage("Docker push") {
+     steps {
+   sh "docker login -u username -p password"
+sh "docker push v1dock/web-services"
+     }
 }
-
-def pushToImage(containerName, tag, dockerUser, dockerPassword){
-    sh "docker login -u $dockerUser -p $dockerPassword"
-    sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
-    sh "docker push $dockerUser/$containerName:$tag"
-    echo "Image push complete"
+stage("Deploy to staging") {
+     steps {
+          sh "docker run -d --rm -p 8765:8080 --name web-services v1dock/web-services"
+     }
 }
-
-def runApp(containerName, tag, dockerHubUser, httpPort){
-    sh "docker pull $dockerHubUser/$containerName"
-    sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
-    echo "Application started on port: ${httpPort} (http)"
+     }
+  post {
+     always {
+          sh "docker stop web-services"
+     }
+}
 }
