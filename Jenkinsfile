@@ -1,4 +1,7 @@
 node {
+	stage("Docker test") {
+		sh "docker version"
+	}
     stage('Initialize'){
         def mvnHome = tool 'M3'
         env.PATH = "${mvnHome}/bin:${env.PATH}"
