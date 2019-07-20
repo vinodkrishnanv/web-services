@@ -54,7 +54,7 @@ pipeline {
 			agent {
 				docker {
 					image 'maven:3-alpine'
-					label 'my-defined-label'
+					label 'master'
 					args  '-v /tmp:/tmp'
 				}
 			}
