@@ -47,7 +47,7 @@
 //}
 pipeline {
 	agent {
-		label 'docker'
+		label 'master'
 	}
 	stages {
 		stage('Build') {
