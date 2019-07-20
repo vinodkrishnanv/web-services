@@ -51,13 +51,9 @@ pipeline {
 	}
 	stages {
 		stage('Build') {
-			agent {
-				docker {
-					// Set both label and image
-					label 'docker'
-					image 'node:7-alpine'
-					args '--name docker-node' // list any args
-				}
+			docker.image('maven:3.3.3-jdk-8').inside {
+				git 'https://github.com/vinodkrishnanv/web-services.git'
+				sh 'mvn -B clean install'
 			}
 			steps {
 				echo 'Building..'
