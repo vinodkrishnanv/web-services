@@ -1,6 +1,7 @@
 node {
 	checkout scm
 	stage("Docker test") {
+		sh "eval \$(\"C:\\Program Files\\Docker Toolbox\\docker-machine.exe\" env default)"
 		sh "docker version"
 	}
     stage('Initialize'){
