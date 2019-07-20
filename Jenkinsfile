@@ -1,18 +1,18 @@
 node {
 	checkout scm
 
-	stage("Docker test") {
-		println(isUnix())
-//		sh "eval \$(\"C:\\Program Files\\Docker Toolbox\\docker-machine.exe\" env default)"
-//		bat "@FOR /f \"tokens=*\" %i IN ('docker-machine env default') DO @%i"
-//		sh "docker version"
-		docker.image('maven:3.3.3-jdk-8').inside {
-			git 'https://github.com/vinodkrishnanv/web-services.git'
-			sh 'mvn -B clean install'
-		}
-//		sh "eval \$(\"C:\\Program Files\\Docker Toolbox\\docker-machine.exe\" env default)"
-//		sh "docker version"
-	}
+//	stage("Docker test") {
+//		println(isUnix())
+////		sh "eval \$(\"C:\\Program Files\\Docker Toolbox\\docker-machine.exe\" env default)"
+////		bat "@FOR /f \"tokens=*\" %i IN ('docker-machine env default') DO @%i"
+////		sh "docker version"
+//		docker.image('maven:3.3.3-jdk-8').inside {
+//			git 'https://github.com/vinodkrishnanv/web-services.git'
+//			sh 'mvn -B clean install'
+//		}
+////		sh "eval \$(\"C:\\Program Files\\Docker Toolbox\\docker-machine.exe\" env default)"
+////		sh "docker version"
+//	}
     stage('Initialize'){
         def mvnHome = tool 'M3'
         env.PATH = "${mvnHome}/bin:${env.PATH}"
