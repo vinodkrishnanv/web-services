@@ -19,6 +19,10 @@ public class MyApp implements Serializable{
         super();
     }
 
+    public MyApp(String name) {
+        this.name = name;
+    }
+
     public MyApp(Long id, String name) {
         this.id = id;
         this.name = name;

@@ -1,8 +1,14 @@
 package com.nielsen.mcm.poc.webservices.rest.v1.controllers;
 
 import com.nielsen.mcm.poc.webservices.WebServicesApplication;
+import com.nielsen.mcm.poc.webservices.rest.v1.models.MyApp;
+import com.nielsen.mcm.poc.webservices.rest.v1.service.MyAppService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,15 +17,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = WebServicesApplication.class,webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
 public class MyAppControllerIT {
+
     @LocalServerPort
     private int port;
 
@@ -35,6 +40,7 @@ public class MyAppControllerIT {
         String expected = "[{\"id\":1,\"name\":\"MCM\"}]";
         JSONAssert.assertEquals(expected, response.getBody(), false);
     }
+
 //    private String createURLWithPort(String uri) {
 //        return "http://localhost:" + port + uri;
 //    }
