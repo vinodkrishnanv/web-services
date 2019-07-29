@@ -4,6 +4,9 @@ node {
         def mvnHome = tool 'M3'
         env.PATH = "${mvnHome}/bin:${env.PATH}"
     }
+	environment {
+		DOCKER_COMMON_CREDS = credentials(${DOCKER-CREDENTIALS})
+	}
 //    stage('Checkout') {
 //        git 'https://github.com/vinodkrishnanv/web-services.git'
 //    }
@@ -24,7 +27,7 @@ node {
 		  sh "docker build -t v1dock/web-services ."
 	}
 	stage("Docker push") {
-	   sh "docker login -u $docker_username -p $docker_password"
+	   sh "docker login -u $DOCKER_COMMON_CREDS_USR -p $DOCKER_COMMON_CREDS_PSW"
 	   sh "docker push v1dock/web-services"
 	}
 //	stage("Deploy to staging") {
