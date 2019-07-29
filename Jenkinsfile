@@ -14,12 +14,12 @@ node {
 	stage("Compile") {
 		sh "mvn clean compile"
 	}
-	stage("Unit test") {
-		sh "mvn test"
-	}
-	stage("Integration test") {
-		sh "mvn verify -Dunit-tests.skip=true"
-	}
+//	stage("Unit test") {
+//		sh "mvn test"
+//	}
+//	stage("Integration test") {
+//		sh "mvn verify -Dunit-tests.skip=true"
+//	}
 	stage("Package") {
 		  sh "mvn package"
 	}
