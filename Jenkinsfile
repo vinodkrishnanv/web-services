@@ -24,7 +24,7 @@ node {
 		  sh "docker build -t v1dock/web-services ."
 	}
 	stage("Docker push") {
-	   sh "docker login -u v1dock -p v1n0d@d0ck3r"
+	   sh "docker login -u $docker_username -p $docker_password"
 	   sh "docker push v1dock/web-services"
 	}
 //	stage("Deploy to staging") {
