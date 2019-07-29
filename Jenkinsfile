@@ -15,13 +15,13 @@ node {
 		sh "mvn clean compile"
 	}
 //	stage("Unit test") {
-//		sh "mvn test"
+//		sh "mvn test -DskipTests"
 //	}
 //	stage("Integration test") {
-//		sh "mvn verify -Dunit-tests.skip=true"
+//		sh "mvn verify -DskipTests -Dunit-tests.skip=true"
 //	}
 	stage("Package") {
-		  sh "mvn package"
+		  sh "mvn package -DskipTests"
 	}
 	stage("Docker build") {
 		  sh "docker build -t v1dock/web-services ."
